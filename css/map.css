@@ -1,0 +1,61 @@
+* {
+  /* 全局字体修改 */
+  font-family: '微软雅黑' !important
+}
+
+.scroll-area {
+  overflow-y: scroll;
+}
+
+.scroll-area::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-mar {
+  height: 24px;
+}
+
+.mt-nav {
+  margin-top: 4.5em;
+}
+
+.bg-dark-trans {
+  background-color: rgba(52, 58, 64, 0.6) !important;
+}
+
+.bg-dark-alert {
+  background-color: rgba(52, 58, 64, 0.9) !important;
+}
+
+.con-trans {
+  opacity: 0.5;
+}
+
+.bg-link {
+  background-color: rgba(52, 58, 64, 0.6) !important;
+}
+
+.bg-link:hover {
+  background-color: rgba(12, 18, 24, 0.8) !important;
+}
+
+.cur-pointer {
+  cursor: pointer;
+}
+
+.fullWindow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#hanabiBackImg {
+	background-image: url("./../pic/map_back.jpg");
+	background-repeat: no-repeat;
+	background-position: center 0;
+  background-size: cover;
+  opacity: 0.4;
+  z-index: 0;
+}

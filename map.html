@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>異存的网站地图</title>
+    <!-- css外部库 -->
+    <link rel="stylesheet" href="./cssLib/bootstrap-datetimepicker-standalone.min.css">
+    <link rel="stylesheet" href="./cssLib/bootstrap.min.css">
+    <link rel="stylesheet" href="./cssLib/color-picker.css">
+    <link rel="stylesheet" href="./cssLib/slider.css">
+    <link rel="stylesheet" href="./cssLib/animate.css">
+    <link rel="stylesheet" href="./cssLib/font-awesome.min.css">
+    <link rel="stylesheet" href="./cssLib/bootstrap-datetimepicker.min.css">
+
+    <link rel="stylesheet" href="./css/fire.css">
+    <link rel="stylesheet" href="./css/mLight.css">
+    <link rel="stylesheet" href="./css/map.css">
+
+    <link rel="shortcut icon" href="pic/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+    <!-- 动画组件，鼠标光须、花火 -->
+    <canvas id="mLight" class="fullWindow"></canvas>
+
+    <div id="hanabiBackImg" class="fullWindow"></div>
+
+
+    <!-- Modal Section Start -->
+
+    <!-- Modal For Todo Plugin -->
+    <div class="modal fade" id="todoModal" role="dialog" aria-labelledby="todoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content bg-dark-trans text-light">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="todoModalLabel">Change Me!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="false">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body scroll-area" id="modalDiv">
+                    <!-- 由js生成列表 -->
+                </div>
+
+                <div class="modal-footer" id="modalBtn">
+                    <a class="btn btn-outline-light" href="#study">study</a>
+                    <a class="btn btn-outline-light" href="#make">make</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal For Todo CountDown -->
+    <div class="modal fade" id="countDownModal" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content bg-dark-trans text-light">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">New Count Down Item</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="false">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="todoTimeInput">内容</label>
+                        <input type="text" class="form-control bg-dark-trans text-light" id="countDownContent" placeholder="countDown内容" />
+                    </div>
+                    <div class="form-group">
+                        <label for="todoTimeInput">截止时间</label>
+                        <input type="text" class="form-control bg-dark-trans text-light" id="countDownDate"
+                            placeholder="yyyy/mm/dd hh:mm:ss">
+                            <small class="text-secondary">格式为yyyy/mm/dd hh:mm:ss，如2019/04/24 17:42:12</small>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-outline-light" onclick="map.newCountDown()">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal For New Todo -->
+    <div class="modal fade" id="newTodoModal" role="dialog" aria-labelledby="todoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content bg-dark-trans text-light">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newTodoTitle">输入新的TODO</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="false">&times;</span>
+                    </button>
+                </div>
+
+                <form onsubmit="return false" id="todoNewForm">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="todoNameInput">名称</label>
+                            <div class="input-group">
+                                <input id="todoNameInput" type="text" class="form-control bg-dark-trans text-light"
+                                    placeholder="TODO元素的名称" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="todoTimeInput">时间</label>
+                            <input type="text" class="form-control bg-dark-trans text-light" id="todoTimeInput"
+                                placeholder="yyyy-mm-dd，如2019.04.04，留空以使用默认值">
+                        </div>
+                        <label for="todoSelectGroup">类型、状态</label>
+                        <div class="input-group form-group" id="todoSelectGroup">
+                            <select class="custom-select bg-dark-trans text-light" id="todoTypeSelect">
+                                <option selected>选择类型</option>
+                                <option value="study">Study</option>
+                                <option value="make">Make</option>
+                            </select>
+                            <select class="custom-select bg-dark-trans text-light" id="todoStateSelect">
+                                <option selected>选择状态</option>
+                                <option value="todo">todo</option>
+                                <option value="done">done</option>
+                                <option value="giveUp">give up</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="todoInfoInput">附加信息</label>
+                            <input type="text" class="form-control bg-dark-trans text-light" id="todoInfoInput"
+                                placeholder="附加信息，可以为空">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-light" onclick="map.newTodo();">新增</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal For Fire Color Plugin -->
+    <div class="modal fade" id="fireColorModal" role="dialog" aria-labelledby="todoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content bg-dark-trans text-light">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fireColorTitle">勾选是否彩色、或选择颜色</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="false">&times;</span>
+                    </button>
+                </div>
+
+                <form onsubmit="return false">
+                    <div class="modal-body">
+                        <label for="color">选择颜色</label>
+                        <div class="input-group" title="Using horizontal option">
+                            <input id="color" type="text" class="form-control input-lg bg-dark-trans text-light"
+                                value="rgba(255, 255, 255, 0.5)" />
+                            <span class="input-group-append">
+                                <span class="input-group-text colorpicker-input-addon"><i>&nbsp;&nbsp;&nbsp;</i></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input ml-1" id="fireColorCheck">
+                        <label class="form-check-label ml-4" for="fireColorCheck">勾选以开启彩色模式，如勾选，则无需选择颜色</label>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-light" id="fireColorPickerBtn">确定</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal For Fire Number Picker -->
+    <div class="modal fade" id="fireNumberModal" role="dialog" aria-labelledby="fireNumberModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content bg-dark-trans text-light">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fireNumerTitle">Change Me!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="false">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body scroll-area">
+                    <input type="text" class="js-range-slider" name="my_range" value="" id="fireRange" />
+                </div>
+
+                <div class="modal-footer" id="fireNumberBtn">
+                    <button class="btn btn-outline-light" id="fireNumberPickerBtn1">确定</button>
+                    <button class="btn btn-outline-light" id="fireNumberPickerBtn2">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal For Storage Backup and Recovery -->
+    <div class="modal fade" id="storageModal" role="dialog" aria-labelledby="storageModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content bg-dark-trans text-light">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="storageTitle">Change Me!</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="false">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body scroll-area">
+                    <textarea id="storageArea" rows="10"
+                        class="form-control input-lg bg-dark-trans text-light"></textarea>
+                </div>
+
+                <div class="modal-footer" id="storageBtn">
+                    <button class="btn btn-outline-light" onclick="map.recoveryData()">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Section End -->
+
+    <!-- title and tool bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark-trans fixed-top">
+        <!-- Icon and text -->
+        <a class="navbar-brand" href="index.html">
+            <img src="pic/favicon.png" width="30" height="30" class="d-inline-block align-top" alt="">
+            CXLM
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Function list and expand function location -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="javascript:void(0)">Map<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        TODO
+                    </a>
+                    <div class="dropdown-menu bg-dark-alert text-muted" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item text-secondary" onclick="todo.show('todo')" href="javascript:void(0)">To Do</a>
+                        <a class="dropdown-item text-secondary" onclick="todo.show('done')" href="javascript:void(0)">Done</a>
+                        <a class="dropdown-item text-secondary" onclick="todo.show('giveup')" href="javascript:void(0)">Give Up</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-secondary" onclick="map.showTodoModal()" href="javascript:void(0)">New Todo</a>
+                        <a class="dropdown-item text-secondary" onclick="map.showCountDownModal()" href="javascript:void(0)">New CountDown</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="storageDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Storage
+                    </a>
+                    <div class="dropdown-menu bg-dark-alert text-muted" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item text-secondary" onclick="map.backup()" href="javascript:void(0)">Backup</a>
+                        <a class="dropdown-item text-secondary" onclick="map.recovery()" href="javascript:void(0)">Recovery</a>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- Search, PC and Mobile -->
+            <form class="form-inline my-2 my-lg-0 d-none d-md-block" onsubmit="return map.search(2);">
+                <input class="form-control mr-sm-2 bg-dark-trans text-light" type="search" name="word" id="toSearch"
+                    placeholder="word to search" aria-label="Search">
+                <button class="btn btn-outline-light my-2 my-sm-0" type="button" onclick="map.search(1);">Baidu</button>
+                <button class="btn btn-outline-light my-2 my-sm-0" type="button"
+                    onclick="map.search(2);">Google</button>
+            </form>
+            <form class="d-md-none form-inline my-2 my-lg-0" action="http://m.baidu.com/s" target="_blank">
+                <input class="form-control mr-sm-2 bg-dark-trans text-light" type="search" name="word"
+                    placeholder="Baidu" aria-label="Search">
+                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Baidu</button>
+            </form>
+        </div>
+    </nav>
+
+
+
+    <div class="row container-fluid mt-nav scroll-area">
+
+        <!-- link list, won't display at mobile device -->
+        <div class="col-2 d-none d-md-block">
+            <ul class="list-group" id="linkgroup">
+                <!-- 链接列表由jQuery生成，参数在map_tool.js中 -->
+            </ul>
+            <div class="dropdown show list-group mt-3">
+                <a class="dropdown-toggle list-group-item list-group-item-action text-light bg-dark-trans" href="javascript:void(0)"
+                    role="button" id="dropMenuBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    API 文档
+                </a>
+
+                <div class="dropdown-menu bg-dark-alert text-muted" id="dropMenu" aria-labelledby="dropdownMenuLink">
+                    <!-- 由jQuery生成链接组 -->
+                </div>
+            </div>
+        </div>
+
+        <div class="col d-none d-md-block">
+            <!-- Text -->
+            <div class="d-none d-md-block alert bg-dark-trans text-light" role="alert">
+                <h1 class="alert-heading" id="dis1"></h1>
+                <p>Created at 2019.1.10, modified at 2019.4.9</p>
+                <hr>
+                <p class="mb-0">What To Do Now?</p>
+                <marquee class="scroll-mar mt-2" direction="up" scrollamount="20" scrolldelay="1000" height="24"
+                    onmouseover="this.stop();" onmouseout="this.start();" id="scroll-mar">
+                    <!-- 滚动区域，js填充内容 -->
+                </marquee>
+            </div>
+            <div id="countDown" class="alert bg-dark-trans mt-3 text-muted" role="alert">
+                <!-- countDown区域 -->
+            </div>
+            <div class="card-group" name="p_weather">
+                <!-- 天气预报，调用sojson接口，由jQuery动态生成 -->
+            </div>
+            <hr>
+            <div class="input-group">
+                <input type="text" name="mid_input" class="form-control bg-dark-trans text-light"
+                    placeholder="QRCode content or ip address">
+                <div class="btn-group" role="group">
+                    <button type="button" onclick="map.getQrCode(1)" class="btn btn-outline-light">QRCode</button>
+                    <button type="button" onclick="map.queryIp(1)" class="btn btn-outline-light">IP</button>
+                    <button type="button" onclick="map.getMD5(1)" class="btn btn-outline-light">MD5</button>
+                    <button type="button" onclick="map.newTab()" class="btn btn-outline-light">Tab</button>
+                    <button type="button" onclick="map.changeTitle()" class="btn btn-outline-light">Title</button>
+                </div>
+            </div>
+            <hr>
+            <div class="input-group">
+                <textarea id="trans-from" class="form-control bg-dark-trans text-light"
+                    placeholder="Input here"></textarea>
+                <textarea id="trans-to" class="form-control bg-dark-trans text-light" readonly
+                    placeholder="get your translation here"></textarea>
+            </div>
+            <div class="text-right">
+                <button class="btn btn-outline-light dropdown-toggle" type="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">翻译方向</button>
+                <div class="dropdown-menu bg-dark-alert text-muted">
+                    <a class="dropdown-item" onclick="map.translate('zh', 'jp')">汉→日</a>
+                    <a class="dropdown-item" onclick="map.translate('jp', 'zh')">日→汉</a>
+                    <a class="dropdown-item" onclick="map.translate('zh', 'en')">汉→英</a>
+                    <a class="dropdown-item" onclick="map.translate('en', 'zh')">英→汉</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-2 d-none d-md-block">
+            <div class="alert bg-dark-trans text-light text-center" role="alert">
+                ↓ 面白い物 ↓
+            </div>
+            <!-- 这里放二维码 -->
+            <div name="imgDiv"></div>
+            <!-- 这里放一个Canvas -->
+            <div class="mt-3 mb-3" id="fire"></div>
+            <!-- 动画控件：火花 -->
+            <div class="text-center">
+                <div class="btn-group" role="group">
+                    <button onclick="map.btn1()" class="btn btn-outline-light">粒子量</button>
+                    <button onclick="map.btn2()" class="btn btn-outline-light">圆数量</button>
+                    <button onclick="map.btn3()" class="btn btn-outline-light">颜色</button>
+                </div>
+            </div>
+            <div id="light" class="mt-3 mb-3">
+                <canvas id="lightCanvas2"></canvas>
+            </div>
+            <!-- 动画控件：光斑 -->
+            <div class="text-center">
+                <div class="btn-group" role="group">
+                    <button onclick="light.create()" class="btn btn-outline-light">重设</button>
+                    <button onclick="map.btn5()" class="btn btn-outline-light">插入</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 以下为移动端布局 -->
+    <div class="d-md-none container-fluid">
+
+        <!-- 天气预报，轮播图模块 -->
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+            </ol>
+            <div class="carousel-inner" name="d_weather">
+                <!-- 这里放轮播图，JQuery实现 -->
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+        <ul class="list-group mt-4" id="mlinkgroup">
+            <!-- 链接列表由jQuery生成，参数在map_tool.js中 -->
+        </ul>
+        <hr>
+        <div class="input-group">
+            <input type="text" name="m_input" class="form-control bg-dark-trans text-light"
+                placeholder="QRCode content or ip address">
+            <div class="btn-group" role="group">
+                <button type="button" onclick="map.getQrCode(0)" class="btn btn-outline-light">QRCode</button>
+                <button type="button" onclick="map.queryIp(0)" class="btn btn-outline-light">IP</button>
+                <button type="button" onclick="map.getMD5(0)" class="btn btn-outline-light">MD5</button>
+            </div>
+        </div>
+        <div class="mt-2" name="mImgDiv"></div>
+    </div>
+    <!-- 外部库 -->
+    <script type="text/javascript" src="./jsLib/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="./jsLib/popper.min.js"></script>
+    <script type="text/javascript" src="./jsLib/moment.min.js"></script>
+    <script type="text/javascript" src="./jsLib/moment.zh-cn.js"></script>
+    <script type="text/javascript" src="./jsLib/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./jsLib/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="./jsLib/sweetalert.min.js"></script>
+    <script type="text/javascript" src="./jsLib/color-picker.js"></script>
+    <script type="text/javascript" src="./jsLib/slider.js"></script>
+    <script type="text/javascript" src="./jsLib/md5.js"></script>
+    <script type="text/javascript" src="./jsLib/fontawesome.min.js"></script>
+    <script type="text/javascript" src="./jsLib/jquery.countdown.min.js"></script>
+    <!-- <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js" integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous"></script> -->
+    <!-- 引用 -->
+    <script src="./js/storage.js"></script>
+    <script type="text/javascript" src="./js/const.js"></script>
+    <script type="text/javascript" src="./js/fire.js"></script>
+    <script type="text/javascript" src="./js/light.js"></script>
+    <script type="text/javascript" src="./js/mLight.js"></script>
+    <script type="text/javascript" src="./js/title.js"></script>
+    <script type="text/javascript" src="./js/object.js"></script>
+    <script type="text/javascript" src="./js/eventPublisher.js"></script>
+    <script type="text/javascript" src="./js/todo.js"></script>
+    <script type="text/javascript" src="./js/map_tool.js"></script>
+    <script>
+        map.init();
+    </script>
+</body>
+
+</html>

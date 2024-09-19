@@ -1,0 +1,35 @@
+/*html,
+body {
+    height: 100%;
+}
+
+body {
+    background: radial-gradient(#222, #000);
+    overflow-y: scroll;
+    background-image: url("./../pic/bac.jpg");
+    background-size: cover;
+}
+ */
+.cover-div {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    background-color: rgba(0, 0, 0, 0.8)
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+canvas {
+    background: #000;
+    box-shadow:
+        0 30px 30px -20px #000;
+    margin: auto;
+    max-height: 100%;
+    max-width: 100%;
+    position: absolute;
+
+}

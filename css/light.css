@@ -1,0 +1,16 @@
+body {
+  background: #000;
+  overflow: hidden;
+}
+
+canvas {
+  top: 0;
+  left: 0;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+#c2 {
+  background: #000;
+}

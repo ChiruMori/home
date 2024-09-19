@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>異存的主页</title>
+    <link rel="shortcut icon" href="pic/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="./cssLib/bootstrap.min.css">
+    <link rel="stylesheet" href="./cssLib/animate.css">
+
+    <link rel="stylesheet" href="./css/star.css">
+    <style>
+        * {
+            font-family: "microsoft yahei"
+        }
+
+        body {
+            background-color: black;
+        }
+
+        .line {
+            display: inline;
+        }
+
+        h1 {
+            font: 'Cinzel', serif;
+            font-weight: 400;
+            text-shadow: 0 0 25px rgba(254, 254, 255, 0.85);
+        }
+
+        .bg-dark-trans {
+            background-color: rgba(52, 58, 64, 0.3) !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 动画组件 -->
+    <div id="spaceCover"> </div>
+    <canvas id="starCanvas"></canvas>
+
+    <!-- title and tool bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark-trans fixed-top">
+        <!-- Icon and text -->
+        <a class="navbar-brand" href="#">
+            <img src="pic/favicon.png" width="30" height="30" class="d-inline-block align-top" alt="">
+            CXLM
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Function list and expand function location -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Home<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="map.html">Map</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="cxlm.showAbout()">About</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="modal fade" id="aboutModal" role="dialog" aria-labelledby="aboutModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content bg-dark-trans text-light">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aboutModalLabel">About</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="false">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body scroll-area" id="modalDiv">
+                    <h3>異存的主页</h3>
+                    <hr>
+                    <p>Created at 2019.3.31</p>
+                    <p>Modified at 2019.4.16</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- js动态定位区域 START -->
+    <div class="text-light" id="title">
+        <h1 id="dis1"></h1>
+    </div>
+    <!-- js动态定位区域 END -->
+
+    <script src="./jsLib/jquery-3.3.1.min.js"></script>
+    <script src="./jsLib/bootstrap.min.js"></script>
+
+    <script src="./js/object.js"></script>
+    <script type="text/javascript" src="./js/eventPublisher.js"></script>
+    <script src="./js/const.js"></script>
+    <script src="./js/title.js"></script>
+    <script src="./js/star.js"></script>
+    <script src="./js/index_tool.js"></script>
+
+</body>
+
+</html>
