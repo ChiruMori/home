@@ -1,0 +1,17 @@
+
+BUGS：
+    （解决）移动鼠标导致越界时出现滚动条
+    （解决）背景图片太长导致溢出
+    （解决）新版谷歌浏览器，无法使用书签折叠
+    （解决）页面图标
+    （体验不好）启动后光标定位到搜索框
+    （解决失败）CDN 加速可能不可用
+    （解决）删除背景图后，列表中只移除了按钮
+    （解决）删除背景图会导致误删
+    （废弃）升级：背景图两层，前层随鼠标动，因数小一些。后层固定，模糊
+    （废弃）底部添加回到旧版链接
+    
+    更新书签后无法展开，比如修改优先级 （2次出现）
+    在页面被切换一定时间后返回时出现图片抖动
+备份：
+    bgImgs_*:*_{"val":["http://www.cxlm.work/imgs/1096.jpg","http://www.cxlm.work/imgs/hx150.png","http://www.cxlm.work/imgs/44.jpg","http://www.cxlm.work/imgs/0030.jpg","http://www.cxlm.work/imgs/55619915.jpg","http://www.cxlm.work/imgs/64899423_p0.jpg","http://www.cxlm.work/imgs/61024101.jpg","http://www.cxlm.work/imgs/64861551_p0.jpg","http://www.cxlm.work/imgs/68203125.jpg","http://www.cxlm.work/imgs/63752068_p0.png","http://www.cxlm.work/imgs/38967800_p0.jpg"],"type":"obj"}_*|*_bookmarks_*:*_{"val":{"showAllBookmarks":false,"maxBookmarkShowNumber":7,"dic":[{"icon":"https://docs.oracle.com/favicon.ico","text":"JDK13 文档","link":"https://docs.oracle.com/en/java/javase/13/docs/api/index.html","weight":25,"id":"BM1580698936239"},{"icon":"https://qiye.163.com/favicon.ico","text":"网易企业邮","link":"https://qiye.163.com/login/","weight":15,"id":"BM1580554837542"},{"icon":"https://csdnimg.cn/public/favicon.ico","text":"CSDN","link":"https://www.csdn.net/","weight":13,"id":"BM1580555057423"},{"icon":"fas fa-book-open","text":"图书馆","link":"http://202.118.84.130:1701/primo_library/libweb/action/myAccountMenu.do?vid=dlmh","weight":11,"id":"BM1580555255335"},{"icon":"https://static.leetcode-cn.com/cn-assets/icons/favicon-96x96.png","text":"力 扣","link":"https://leetcode-cn.com/","weight":10,"id":"BM1580553593695"},{"icon":"https://www.bilibili.com/favicon.ico","text":"哔哩哔哩","link":"https://www.bilibili.com/","weight":6,"id":"BM1580554739391"},{"icon":"https://github.githubassets.com/favicon.ico","text":"GitHub","link":"https://github.com/","weight":6,"id":"BM1580555199820"},{"icon":"https://free-ss.site/favicon.ico","text":"免费账号","link":"https://free-ss.site/","weight":5,"id":"BM1580553848773"},{"icon":"https://www.bootcdn.cn/assets/ico/favicon.ico","text":"BootCDN","link":"https://www.bootcdn.cn/","weight":4,"id":"BM1580555150170"},{"icon":"fas fa-cube","link":"http://www.mf100.org/beginner_01.htm","weight":3,"id":"BM1580716029104"},{"icon":"http://www.gangqinpu.com/favicon.ico","text":"虫虫钢琴","link":"http://www.gangqinpu.com/","weight":1,"id":"BM1580554961499"}]},"type":"obj"}_*|*_
