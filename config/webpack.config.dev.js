@@ -1,9 +1,14 @@
 import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
-import ESLintPlugin from 'eslint-webpack-plugin';
+import webpack from 'webpack';
 
 export default {
   module: {
     rules: [
+      {
+        test: /\.(js|jsx|ts|tsx)$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
       {
         test: /\.css$/i,
         use: [
@@ -35,10 +40,8 @@ export default {
     new ForkTsCheckerWebpackPlugin({
       async: false,
     }),
-    new ESLintPlugin({
-      extensions: ['js', 'jsx', 'ts', 'tsx'],
-      files: './src/**/*', // 或者其他需要检查的目录
-      overrideConfigFile: './eslint.config.mjs', // 显式指定 ESLint 配置文件
+    new webpack.ProvidePlugin({
+      "React": "react",
     }),
   ],
   devtool: 'eval-cheap-module-source-map',
