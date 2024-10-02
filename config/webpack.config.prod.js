@@ -1,45 +1,46 @@
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 
-module.exports = {
+export default {
   output: {
-    filename: "scripts/[name].[contenthash].js",
+    filename: 'scripts/[name].[contenthash].js',
   },
   module: {
     rules: [
       {
         test: /\.css$/i,
-        use: [MiniCssExtractPlugin.loader, {
-          loader: "css-loader",
-          options: {
-            modules: true,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+            },
           },
-        }],
+        ],
       },
       {
         test: /\.less$/i,
         use: [
           MiniCssExtractPlugin.loader,
           {
-            loader: "css-loader",
+            loader: 'css-loader',
             options: {
               modules: true,
             },
           },
-          "less-loader",
+          'less-loader',
         ],
       },
     ],
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: "styles/[name].[contenthash].css",
+      filename: 'styles/[name].[contenthash].css',
     }),
   ],
-  optimization: { 
-    minimizer: [
-      new CssMinimizerPlugin(), 
-    ], 
+  optimization: {
+    minimizer: [new CssMinimizerPlugin()],
   },
-  mode: "production",
+  mode: 'production',
 };
