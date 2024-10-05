@@ -33,7 +33,7 @@ export default {
   module: {
     rules: [
         { test: /\.(js|jsx)$/, exclude: /node_modules/, use: { loader: 'babel-loader' } },
-        { test: /\.(ts|tsx)$/, exclude: /node_modules/, use: {loader: 'ts-loader'} },
+        { test: /\.(ts|tsx)$/, exclude: /node_modules/, use: { loader: 'ts-loader'} },
         // 注意顺序，先style-loader，再css-loader和其他loader
         { test: /\.(css|less)$/, exclude: /node_modules/, use: ['style-loader', 'css-loader', 'less-loader']}
     ],
