@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import '../enums/SearchTypeEnum';
 import './SearchBar.less';
-
+import storage from '../helper/localHolder';
 import {
   SearchTypeEnum,
   getSearchUrl,
@@ -12,13 +12,18 @@ import {
   getSearchIcon,
 } from '../enums/SearchTypeEnum';
 
+const searchEngineKey = 'searchType';
+
 const SearchTypeSelect: React.FC<{
   searchType: SearchTypeEnum;
   setSearchType: (type: SearchTypeEnum) => void;
 }> = ({ searchType, setSearchType }) => {
   // 选择搜索引擎类型
   const handleMenuClick: MenuProps['onClick'] = (e) => {
-    setSearchType(e.key as SearchTypeEnum);
+    const newSearchType =  e.key as SearchTypeEnum;
+    storage.set(searchEngineKey, newSearchType, () => {
+      setSearchType(newSearchType);
+    });
   };
 
   const items: MenuProps['items'] = [
@@ -61,9 +66,10 @@ const SearchTypeSelect: React.FC<{
 
   return (
     <Dropdown menu={menuProps}>
-      <Button>
+      <Button type="link">
         <Space>
           <FontAwesomeIcon icon={getSearchIcon(searchType)} />
+          <FontAwesomeIcon icon={['fas', 'caret-down']} />
         </Space>
       </Button>
     </Dropdown>
@@ -77,16 +83,18 @@ const SearchBarComponent: React.FC<{ type: SearchTypeEnum }> = ({ type }) => {
   );
 
   useEffect(() => {
-    // TODO: 从 localStorage 中读取搜索引擎类型
-    const searchTypeFromLocal = localStorage.getItem('searchType');
-    if (searchTypeFromLocal) {
-      setSearchType(searchTypeFromLocal as SearchTypeEnum);
-    }
+    storage.get(searchEngineKey, (searchTypeFromLocal) => {
+      if (searchTypeFromLocal) {
+        console.log('read local searchType:', searchTypeFromLocal);
+        setSearchType(searchTypeFromLocal as SearchTypeEnum);
+      }
+    });
   }, [type]);
 
   return (
     <Input.Search
       id="search-input"
+      size="large"
       placeholder={getSearchName(searchType)}
       addonBefore={
         <SearchTypeSelect
