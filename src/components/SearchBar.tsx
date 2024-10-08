@@ -93,7 +93,7 @@ const SearchBarComponent: React.FC<{ type: SearchTypeEnum }> = ({ type }) => {
 
   return (
     <Input.Search
-      id="search-input"
+      className="search-bar"
       size="large"
       placeholder={getSearchName(searchType)}
       addonBefore={

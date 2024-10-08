@@ -4,6 +4,7 @@ import './App.less';
 import './helper/icons';
 import { SearchTypeEnum } from './enums/SearchTypeEnum';
 import SearchBarComponent from './components/SearchBar';
+import BookmarksComponent from './components/Bookmarks';
 
 const App: React.FC = () => {
   return (
@@ -15,7 +16,7 @@ const App: React.FC = () => {
       {/* 搜索栏 */}
       <SearchBarComponent type={ SearchTypeEnum.GOOGLE } />
       {/* 书签区域 */}
-      <div className="bookmark-area"></div>
+      <BookmarksComponent />
       {/* 底部版权声明 */}
       <footer className="main-footer"></footer>
     </div>
