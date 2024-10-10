@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="referrer" content="no-referrer">
+  <!-- 因采用 background-image 实现背景图，这个防盗链在 Chrome 中没有效果 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Start Here</title>
+  <link rel="shortcut icon" href="./lib/favicon.ico" type="image/x-icon">
+  <link href="https://cdn.bootcss.com/font-awesome/5.11.2/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="back" id="back-area"></div>
+
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navGrp"
+        aria-controls="navGrp" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navGrp">
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">背景</a>
+            <ul class="dropdown-menu" id="back-drop-menu"></ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:;" id="enter-edit-btn"><i class="fas fa-edit"></i> 编辑</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="javascript:;" id="exit-edit-btn"><i class="fas fa-edit fa-spin"></i> 完成</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="search-area">
+      <form action="#" method="get" id="search-form" target="_blank">
+        <div class="input-group input-group-lg">
+          <button id="search-toggle-btn" class="btn btn-outline-secondary dropdown-toggle btn0af" type="button"
+            data-bs-toggle="dropdown" aria-expanded="false"></button>
+          <ul id="search-dropdowns" class="dropdown-menu">
+          </ul>
+          <input id="search-input" type="text" class="form-control btn0af" aria-label="搜索框" placeholder="Holder Here">
+          <button class="btn btn-outline-secondary btn0af" type="button" id="button-addon2"><i
+              class="fas fa-search"></i></button>
+        </div>
+      </form>
+    </div>
+
+    <!--- 书签组 -->
+    <div class="bookmark-area" id="bookmark-area"></div>
+    <div class="btns" id="edit-btns"></div>
+
+    <footer class="text-muted text-center">
+      <small>
+        <span>Copyright © ChiruMori </span>
+        <a target="_black" class="text-decoration-none" href="http://beian.miit.gov.cn/">辽ICP备17003106号</a>
+      </small>
+    </footer>
+
+    <!--- 弹窗 -->
+    <div class="toast-area" id="toast-area"></div>
+
+  </div>
+  <!-- JS Lib -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/font-awesome/5.11.2/js/fontawesome.min.js"></script>
+  <script src="https://cdn.bootcss.com/font-awesome/5.11.2/js/all.min.js"></script>
+  <script src="https://cdn.bootcss.com/jquery-contextmenu/2.7.1/jquery.ui.position.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/popper.js/2.11.5/umd/popper.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.3/js/bootstrap.min.js"></script>
+  <script src="./dist/index.js"></script>
+
+  <script src="/home/live2d/auto_waifu.js"></script>
+</body>
+
+</html>

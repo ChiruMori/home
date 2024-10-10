@@ -1,0 +1,234 @@
+/// 全局变量
+/// ========================================
+// 统一文字大小
+@small_font_size: 10pt;
+@medium_font_size: 12pt;
+@large_font_size: 14pt;
+// 主题配色
+@theme_major_color: #0af;
+@theme_fore_color: #fff;
+@theme_back_color: rgba(0, 0, 0, 0.5);
+@theme_weak_color: #666;
+@theme_trans_color: rgba(255, 255, 255, 0.5);
+
+a {
+    color: @theme_major_color;
+}
+
+.text-major {
+    color: @theme_major_color  !important;
+}
+
+/// 顶部导航栏
+/// ========================================
+nav {
+    background: @theme_back_color;
+    box-shadow: 0 0 1rem @theme_major_color;
+
+    a.nav-link {
+        text-decoration: none;
+        color: @theme_fore_color !important;
+        margin-left: 1rem;
+        font-size: @large_font_size;
+    }
+
+    .navbar-toggler {
+
+        &-icon {
+            color: @theme_fore_color;
+            line-height: 30px;
+            transform: rotate(0deg);
+            transition: transform .3s linear;
+        }
+
+        &[aria-expanded="true"]>.navbar-toggler-icon {
+            transform: rotate(90deg);
+        }
+
+    }
+
+    .collapse {
+        &.edit {
+            #enter-edit-btn {
+                display: none;
+            }
+
+            #exit-edit-btn {
+                display: block;
+            }
+        }
+
+        &:not(.edit) {
+            #exit-edit-btn {
+                display: none;
+            }
+
+            #enter-edit-btn {
+                display: block;
+            }
+        }
+    }
+}
+
+/// 搜索区域
+/// ========================================
+
+.btn0af,
+.btn0af:active,
+.btn0af:focus {
+    border: 1px solid @theme_major_color;
+    background-color: @theme_back_color;
+    color: @theme_fore_color;
+}
+
+.search-area {
+    padding: .5rem;
+    margin-bottom: 1rem;
+    margin-top: 3em;
+
+    input::placeholder {
+        color: @theme_weak_color;
+    }
+}
+
+/// bookmark group 书签组样式
+/// ========================================
+.bmg {
+    &-title {
+        color: @theme_trans_color;
+        padding: 0.5rem 0.5rem 0 0.5rem;
+        // text-shadow: 0 0 0.25rem @theme_major_color;
+
+        .text-major {
+            cursor: pointer;
+        }
+    }
+
+    &-flow {
+        position: relative;
+        flex-direction: column;
+        padding: 0 .5rem 1rem .5rem;
+        word-wrap: break-word;
+        background-clip: border-box;
+
+        .del-btn {
+            position: absolute;
+            right: -0.2rem;
+            top: -1.1rem;
+            color: red;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+    }
+
+    &-item {
+        padding: 0 .5rem 1rem .5rem;
+        border-radius: 0.25rem;
+        background-color: @theme_back_color;
+        background-clip: border-box;
+        border: 1px solid @theme_major_color;
+        padding: 0.5rem;
+        display: flex;
+        text-decoration: none;
+
+        &:hover {
+            box-shadow: 0 0 .5rem @theme_major_color;
+        }
+
+        &:active {
+            box-shadow: 0 0 1rem @theme_major_color
+        }
+
+        &-icon {
+            float: left;
+            display: block;
+            margin-right: 10px;
+            width: 40px;
+            min-width: 40px;
+            height: 40px;
+            font-size: 36px;
+            line-height: 36px;
+            padding: 3px;
+            color: @theme_fore_color;
+        }
+
+        &-content {
+            font-size: @medium_font_size;
+            display: inline-block;
+            flex: 1;
+
+            .bm-title {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                color: @theme_fore_color;
+            }
+
+            .bm-text {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                color: @theme_weak_color
+            }
+        }
+    }
+}
+
+/// 按钮组样式
+/// ========================================
+.btns {
+    text-align: center;
+    margin-top: 2rem;
+
+    button {
+        margin-left: .5rem;
+    }
+}
+
+/// 底部固定备案信息
+/// ========================================
+footer {
+    margin-top: 200px;
+    padding-top: 10px;
+    border-top: 1px solid @theme_weak_color;
+    margin-bottom: 2rem;
+
+    a {
+        color: @theme_trans_color;
+    }
+}
+
+/// 弹窗组
+/// ========================================
+.toast-area {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+
+    .toast-header small {
+        right: 12px;
+        position: absolute;
+    }
+}
+
+/// 背景
+/// ========================================
+.back {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}
+
+.back-cover {
+    position: absolute;
+    background-repeat: no-repeat;
+    background-position: center 0;
+    background-size: cover;
+}
