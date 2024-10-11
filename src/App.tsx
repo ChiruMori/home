@@ -7,6 +7,7 @@ import SearchBarComponent from './components/SearchBar';
 import BookmarksComponent from './components/Bookmarks';
 
 const App: React.FC = () => {
+  const [editMode, setEditMode] = React.useState(true);
   return (
     <div className="App">
       {/* 顶部导航栏*/}
@@ -14,9 +15,9 @@ const App: React.FC = () => {
       {/* 侧边栏 */}
       <aside className="main-sidebar"></aside>
       {/* 搜索栏 */}
-      <SearchBarComponent type={ SearchTypeEnum.GOOGLE } />
+      <SearchBarComponent type={SearchTypeEnum.GOOGLE} />
       {/* 书签区域 */}
-      <BookmarksComponent />
+      <BookmarksComponent editMode={editMode} />
       {/* 底部版权声明 */}
       <footer className="main-footer"></footer>
     </div>
