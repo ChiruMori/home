@@ -11,9 +11,10 @@ import {
   Popconfirm,
   Typography,
 } from 'antd';
+import { IconName, IconPrefix } from '@fortawesome/fontawesome-svg-core';
 
 import './Bookmarks.less';
-import { IconName, IconPrefix } from '@fortawesome/fontawesome-svg-core';
+import IconPicker from './IconPicker';
 // import storage from "../helper/localHolder";
 
 enum BookmarkType {
@@ -458,7 +459,14 @@ const BookmarksComponent: React.FC<{
             <Input />
           </Form.Item>
           <Form.Item name="avatar" label="图标" rules={[{ required: true }]}>
-            <Input />
+            {/* FIXME: 报错呢 */}
+            <IconPicker
+              value={bookmarkForm.getFieldValue('avatar')}
+              onSelect={(val) => {
+                console.log(val);
+                bookmarkForm.setFieldsValue({ avatar: val.join(' ') });
+              }}
+            />
           </Form.Item>
         </Form>
       </Modal>
