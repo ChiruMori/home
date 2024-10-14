@@ -2,9 +2,9 @@ import React from 'react';
 
 import './App.less';
 import './helper/icons';
-import { SearchTypeEnum } from './enums/SearchTypeEnum';
+import { SearchTypeEnum } from './components/Bookmarks/types';
 import SearchBarComponent from './components/SearchBar';
-import BookmarksComponent from './components/Bookmarks';
+import BookmarksComponent from './components/Bookmarks/Bookmarks';
 
 const App: React.FC = () => {
   const [editMode, setEditMode] = React.useState(true);

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Input, Dropdown, Button, Space, type MenuProps } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import '../enums/SearchTypeEnum';
+import './Bookmarks/types';
 import './SearchBar.less';
 import storage from '../helper/localHolder';
 import {
@@ -10,7 +10,7 @@ import {
   getSearchUrl,
   getSearchName,
   getSearchIcon,
-} from '../enums/SearchTypeEnum';
+} from './Bookmarks/types';
 
 const searchEngineKey = 'searchType';
 

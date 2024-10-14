@@ -4,7 +4,7 @@ const set = (key: string, value: any, fb: () => void) => {
   localforage.setItem(key, value).then(fb);
 };
 
-const setAsyn = async (key: string, value: any) => {
+const setAsync = async (key: string, value: any) => {
     await localforage.setItem(key, value);
 }
 
@@ -12,7 +12,7 @@ const get = (key: string, fb: (value: any) => void) => {
    localforage.getItem(key).then((value) => fb(value));
 };
 
-const getAsyn = async (key: string) => {
+const getAsync = async (key: string) => {
     return await localforage.getItem(key);
 }
 
@@ -39,4 +39,4 @@ const importAll = (dataString: string) => {
     window.location.reload();
 }
 
-export default { set, get, setAsyn, getAsyn, exportAll, importAll };
+export default { set, get, setAsync, getAsync, exportAll, importAll };

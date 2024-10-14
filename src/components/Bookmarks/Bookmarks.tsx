@@ -1,44 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  Card,
-  List,
-  Modal,
-  Form,
-  Input,
-  Select,
-  Button,
-  Popconfirm,
-  Typography,
-} from 'antd';
-import { IconName, IconPrefix } from '@fortawesome/fontawesome-svg-core';
+import { Card, List, Popconfirm, Typography, notification } from 'antd';
 
+import U from '../../helper/utils';
+import { BookmarkType, BookmarksGroup, Bookmark } from './types';
+import BookmarkModal from './BookmarkModal';
+import storage from '../../helper/localHolder';
 import './Bookmarks.less';
-import IconPicker from './IconPicker';
-// import storage from "../helper/localHolder";
-
-enum BookmarkType {
-  // 普通快捷方式
-  URL = 'URL',
-  // 可以放置一个缩略图
-  IMG = 'IMG',
-  // 添加按钮
-  ADD = 'ADD',
-}
-
-interface Bookmark {
-  title: string;
-  desc: string;
-  action: string;
-  avatar: [IconPrefix, IconName];
-  type: BookmarkType;
-  cover?: string;
-}
-
-interface BookmarksGroup {
-  title: string;
-  bookmarks: Bookmark[];
-}
 
 const initBookmarks = [
   {
@@ -48,61 +16,30 @@ const initBookmarks = [
         title: 'Google',
         desc: 'Google Search',
         action: 'https://www.google.com',
-        avatar: ['fab', 'google'],
-        type: BookmarkType.URL,
-      },
-      {
-        title: 'Google2',
-        desc: 'Google Search',
-        action: 'https://www.google.com',
-        avatar: ['fab', 'google'],
-        type: BookmarkType.URL,
-      },
-      {
-        title: 'Google3',
-        desc: 'Google Search',
-        action: 'https://www.google.com',
-        avatar: ['fab', 'google'],
-        type: BookmarkType.URL,
-      },
-      {
-        title: 'Google4',
-        desc: 'Google Search',
-        action: 'https://www.google.com',
-        avatar: ['fab', 'google'],
-        type: BookmarkType.URL,
-      },
-    ],
-  },
-  {
-    title: 'Group2',
-    bookmarks: [
-      {
-        title: 'Google5',
-        desc: 'Google Search',
-        action: 'https://www.google.com',
-        type: BookmarkType.IMG,
-        cover:
-          'https://mori.plus/upload/thumbnails/2024/w800/moricirclezip.png',
-      },
-      {
-        title: 'Google6',
-        desc: 'Google Search',
-        action: 'https://www.google.com',
-        avatar: ['fab', 'google'],
+        avatar: 'fab google',
         type: BookmarkType.URL,
       },
     ],
   },
 ] as BookmarksGroup[];
-// TODO: 初始化，获取本地存储的数据
 
 const BookmarksComponent: React.FC<{
   editMode: boolean;
 }> = ({ editMode }) => {
   const [bookmarkGroups, setBookmarkGroups] = useState(initBookmarks);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentBookmark, setCurrentBookmark] = useState<Bookmark>();
+  const [currentGroup, setCurrentGroup] = useState<string>('');
   const addBtnTitlePrefix = 'InnerAddTo:';
+  // 从本地存储中读取书签数据
+  useEffect(() => {
+    const fetchBookmarks = async () => {
+      storage.getAsync('bookmarks').then((data) => {
+        data && setBookmarkGroups(data as BookmarksGroup[]);
+      });
+    };
+    fetchBookmarks();
+  }, initBookmarks);
 
   // 拖拽的哪个卡片
   const onDragCard = (
@@ -130,8 +67,15 @@ const BookmarksComponent: React.FC<{
     const fromTitle = event.dataTransfer.getData('from');
     // 更新顺序，将当前书签插入到指定位置
     const bookmarksTmp = bookmarkGroups.slice();
-    const targetGroup = bookmarksTmp.find((group) => group.title === toGroup);
-    const targetBookmarks = targetGroup?.bookmarks;
+    let targetGroup = bookmarksTmp.find((group) => group.title === toGroup);
+    if (!targetGroup) {
+      targetGroup = {
+        title: toGroup,
+        bookmarks: [],
+      };
+      bookmarksTmp.push(targetGroup);
+    }
+    const targetBookmarks = targetGroup!.bookmarks;
     const fromGroup = bookmarksTmp.find(
       (group) => group.title === fromGroupTitle,
     );
@@ -159,28 +103,30 @@ const BookmarksComponent: React.FC<{
     } else {
       fromGroup.bookmarks = fromBookmarks;
     }
-    // TODO: 更新本地存储
+    // 更新本地存储
+    storage.setAsync('bookmarks', bookmarksTmp);
     // 触发重新渲染
     setBookmarkGroups(bookmarksTmp);
   };
 
   // 表单
-  const [bookmarkForm] = Form.useForm();
-  const layout = {
-    labelCol: { span: 4 },
-    wrapperCol: { span: 16 },
-  };
-  const handleOk = () => {
+  const handleOk = (values: Bookmark, initTitle?: string) => {
     if (!editMode) {
       return;
     }
-    console.log(bookmarkForm.getFieldsValue());
-    const values = bookmarkForm.getFieldsValue();
     const bookmarksTmp = bookmarkGroups.slice();
-    const targetGroup = bookmarksTmp.find(
-      (group) => group.title === values.group,
+    let targetGroup = bookmarksTmp.find(
+      (group) => group.title === currentGroup,
     );
-    const targetBookmarks = targetGroup?.bookmarks;
+    // 新建组
+    if (!targetGroup) {
+      targetGroup = {
+        title: currentGroup,
+        bookmarks: [],
+      };
+      bookmarksTmp.push(targetGroup);
+    }
+    const targetBookmarks = targetGroup!.bookmarks;
     if (!targetBookmarks) {
       return;
     }
@@ -188,13 +134,32 @@ const BookmarksComponent: React.FC<{
       title: values.title,
       desc: values.desc,
       action: values.action,
-      avatar: values.avatar.split(' '),
+      avatar: values.avatar,
       type: values.type,
       cover: values.cover,
     };
-    targetBookmarks.push(toInsert);
+    // 修改或新增
+    const toUpdateIndex = targetBookmarks.findIndex(
+      (bm) => bm.title === initTitle,
+    );
+    // 校验，不能与其他书签重名
+    if (initTitle !== values.title) {
+      if (targetBookmarks.find((bm) => bm.title === values.title)) {
+        notification.error({
+          message: '标题重复',
+          description: '新标题与已有的书签标题重复，请修改后重试！',
+        });
+        return;
+      }
+    }
+    if (toUpdateIndex !== -1) {
+      targetBookmarks[toUpdateIndex] = toInsert;
+    } else {
+      targetBookmarks.push(toInsert);
+    }
     targetGroup.bookmarks = targetBookmarks;
-    // TODO: 更新本地存储
+    // 更新本地存储
+    storage.setAsync('bookmarks', bookmarksTmp);
     // 触发重新渲染
     setBookmarkGroups(bookmarksTmp);
     // 关闭弹窗
@@ -221,7 +186,8 @@ const BookmarksComponent: React.FC<{
       );
       bookmarksTmp.splice(targetIndex, 1);
     }
-    // TODO: 更新本地存储
+    // 更新本地存储
+    storage.setAsync('bookmarks', bookmarksTmp);
     // 触发重新渲染
     setBookmarkGroups(bookmarksTmp);
     // 关闭弹窗
@@ -237,7 +203,8 @@ const BookmarksComponent: React.FC<{
       return;
     }
     targetGroup.title = newTitle;
-    // TODO: 更新本地存储
+    // 更新本地存储
+    storage.setAsync('bookmarks', bookmarksTmp);
     // 触发重新渲染
     setBookmarkGroups(bookmarksTmp);
   };
@@ -250,31 +217,26 @@ const BookmarksComponent: React.FC<{
       (group) => group.title === title,
     );
     bookmarksTmp.splice(targetIndex, 1);
-    // TODO: 更新本地存储
+    // 更新本地存储
+    storage.setAsync('bookmarks', bookmarksTmp);
     // 触发重新渲染
     setBookmarkGroups(bookmarksTmp);
   };
-  const [editModal, setEditModal] = useState(true);
-  const [coverHidden, setCoverHidden] = useState(true);
   const showModal = (group: string, init?: Bookmark) => {
     if (!editMode) {
       return;
     }
+    setCurrentGroup(group);
+    setCurrentBookmark(init);
     setIsModalOpen(true);
-    bookmarkForm.resetFields();
-    bookmarkForm.setFieldsValue({
-      group: group,
-      title: init?.title,
-      desc: init?.desc,
-      action: init?.action,
-      avatar: init?.avatar.join(' '),
-      type: init?.type,
-      cover: init?.cover,
-    });
-    // init 为空，需要隐藏删除按钮
-    setEditModal(init !== undefined);
-    // 如果是图片类型，显示图片链接
-    setCoverHidden(init?.type !== BookmarkType.IMG);
+  };
+  // 生成新组名
+  const generateGroupName = (i: number = 1): string => {
+    const thisTry = `Group${i}`;
+    if (bookmarkGroups.find((group) => group.title === thisTry)) {
+      return generateGroupName(i + 1);
+    }
+    return thisTry;
   };
 
   return (
@@ -289,7 +251,7 @@ const BookmarksComponent: React.FC<{
               title: addBtnTitlePrefix + group.title,
               desc: '',
               action: '',
-              avatar: ['fas', 'plus'],
+              avatar: 'fas plus',
               type: BookmarkType.ADD,
             });
           }
@@ -386,7 +348,9 @@ const BookmarksComponent: React.FC<{
                             description={
                               bm.type !== BookmarkType.ADD ? bm.desc : null
                             }
-                            avatar={<FontAwesomeIcon icon={bm.avatar} />}
+                            avatar={
+                              <FontAwesomeIcon icon={U.strToIcon(bm.avatar)} />
+                            }
                           />
                         ) : null}
                       </Card>
@@ -397,79 +361,36 @@ const BookmarksComponent: React.FC<{
             </>
           );
         })}
+        <Card
+          hidden={!editMode}
+          className="bookmark-add-grp bookmark-card-add"
+          hoverable={true}
+          onDrop={(event) => onDropCard(event, generateGroupName(), 'add')}
+          onDragOver={(event) => event.preventDefault()}
+          onClick={() => {
+            if (editMode) {
+              showModal(generateGroupName());
+            }
+          }}
+        >
+          <Card.Meta
+            key={'new-group'}
+            avatar={<FontAwesomeIcon icon={['fas', 'plus']} />}
+          />
+        </Card>
       </div>
-      <Modal
-        title={editModal ? '编辑' : '新建' + '书签'}
-        open={isModalOpen}
+      <BookmarkModal
+        visible={isModalOpen}
+        editMode={!!currentBookmark}
         onOk={handleOk}
         onCancel={() => setIsModalOpen(false)}
-        footer={[
-          editModal ? (
-            <Popconfirm
-              key="delete"
-              title="确认删除该书签吗？"
-              onConfirm={() =>
-                handleDelete(
-                  bookmarkForm.getFieldValue('group'),
-                  bookmarkForm.getFieldValue('title'),
-                )
-              }
-              okText="确认"
-              cancelText="取消"
-            >
-              <Button key="delete" type="dashed" danger>
-                删除
-              </Button>
-            </Popconfirm>
-          ) : null,
-          <Button key="submit" type="primary" onClick={handleOk}>
-            确定
-          </Button>,
-        ]}
-      >
-        <Form {...layout} form={bookmarkForm} name="bookmark-edit-form">
-          <Form.Item name="group" hidden>
-            <Input />
-          </Form.Item>
-          <Form.Item name="title" label="标题" rules={[{ required: true }]}>
-            <Input disabled={editModal} />
-          </Form.Item>
-          <Form.Item name="desc" label="描述" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="action" label="URL" rules={[{ required: true }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="type" label="类型" rules={[{ required: true }]}>
-            <Select
-              onSelect={(val) => {
-                setCoverHidden(val === BookmarkType.URL);
-              }}
-            >
-              <Select.Option value={BookmarkType.URL}>常规</Select.Option>
-              <Select.Option value={BookmarkType.IMG}>贴图</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="cover"
-            label="图片链接"
-            rules={[{ required: true }]}
-            hidden={coverHidden}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item name="avatar" label="图标" rules={[{ required: true }]}>
-            {/* FIXME: 报错呢 */}
-            <IconPicker
-              value={bookmarkForm.getFieldValue('avatar')}
-              onSelect={(val) => {
-                console.log(val);
-                bookmarkForm.setFieldsValue({ avatar: val.join(' ') });
-              }}
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
+        onDelete={() => {
+          if (currentBookmark) {
+            handleDelete(currentGroup, currentBookmark.title);
+          }
+        }}
+        form={currentBookmark}
+      />
     </>
   );
 };
