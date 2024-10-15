@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Card, List, Popconfirm, Typography, notification } from 'antd';
 
-import U from '../../helper/utils';
+import storage from '@/helper/localHolder';
+import U from '@/helper/utils';
+import { useEditMode } from '@/components/common/ContextProvider';
 import { BookmarkType, BookmarksGroup, Bookmark } from './types';
 import BookmarkModal from './BookmarkModal';
-import storage from '../../helper/localHolder';
-import './Bookmarks.less';
+import './index.less';
 
 const initBookmarks = [
   {
@@ -22,15 +23,31 @@ const initBookmarks = [
     ],
   },
 ] as BookmarksGroup[];
+const bookmarkGrid = {
+  // 栅格间距
+  gutter: 16,
+  // 每行列数(<576px)
+  xs: 1,
+  // 每行列数(<768px)
+  sm: 2,
+  // 每行列数(<992px)
+  md: 3,
+  // 每行列数(<1200px)
+  lg: 4,
+  // 每行列数(<1600px)
+  xl: 5,
+  // 每行列数(1600px~)
+  xxl: 6,
+};
 
-const BookmarksComponent: React.FC<{
-  editMode: boolean;
-}> = ({ editMode }) => {
+const BookmarksComponent: React.FC = () => {
   const [bookmarkGroups, setBookmarkGroups] = useState(initBookmarks);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentBookmark, setCurrentBookmark] = useState<Bookmark>();
   const [currentGroup, setCurrentGroup] = useState<string>('');
   const addBtnTitlePrefix = 'InnerAddTo:';
+  // 上下文中的编辑模式
+  const { editMode } = useEditMode();
   // 从本地存储中读取书签数据
   useEffect(() => {
     const fetchBookmarks = async () => {
@@ -292,22 +309,7 @@ const BookmarksComponent: React.FC<{
               </Typography.Title>
               <List
                 className="bookmark-area"
-                grid={{
-                  // 栅格间距
-                  gutter: 16,
-                  // 每行列数(<576px)
-                  xs: 1,
-                  // 每行列数(<768px)
-                  sm: 2,
-                  // 每行列数(<992px)
-                  md: 3,
-                  // 每行列数(<1200px)
-                  lg: 4,
-                  // 每行列数(<1600px)
-                  xl: 4,
-                  // 每行列数(1600px~)
-                  xxl: 4,
-                }}
+                grid={bookmarkGrid}
                 dataSource={bookmarkCopy}
                 renderItem={(bm) => {
                   return (

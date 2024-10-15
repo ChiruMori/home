@@ -2,15 +2,14 @@ import React, { useEffect } from 'react';
 import { Input, Dropdown, Button, Space, type MenuProps } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import './Bookmarks/types';
-import './SearchBar.less';
-import storage from '../helper/localHolder';
+import storage from '@/helper/localHolder';
+import './index.less';
 import {
-  SearchTypeEnum,
-  getSearchUrl,
-  getSearchName,
   getSearchIcon,
-} from './Bookmarks/types';
+  getSearchName,
+  getSearchUrl,
+  SearchTypeEnum,
+} from './types';
 
 const searchEngineKey = 'searchType';
 
@@ -20,7 +19,7 @@ const SearchTypeSelect: React.FC<{
 }> = ({ searchType, setSearchType }) => {
   // 选择搜索引擎类型
   const handleMenuClick: MenuProps['onClick'] = (e) => {
-    const newSearchType =  e.key as SearchTypeEnum;
+    const newSearchType = e.key as SearchTypeEnum;
     storage.set(searchEngineKey, newSearchType, () => {
       setSearchType(newSearchType);
     });

@@ -8,7 +8,7 @@ export default {
   entry: './src/index.tsx',
   output: {
     filename: 'bundle.[contenthash].js',
-    path: path.resolve(__dirname, '../dist'),
+    path: path.resolve(__dirname, 'dist'),
     clean: true, // 打包前清理 dist 文件夹
   },
 
@@ -16,6 +16,9 @@ export default {
   devtool: 'source-map',
 
   resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
     // Add '.ts' and '.tsx' as resolvable extensions.
     extensions: ['.ts', '.tsx', '.js', '.json'],
   },

@@ -1,16 +1,7 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, Select, Button, Popconfirm } from 'antd';
-import { Bookmark, BookmarkType } from './types';
-import IconPicker from './IconPicker';
-
-interface BookmarkModalProps {
-  visible: boolean;
-  editMode: boolean;
-  onOk: (values: Bookmark, initTitle?: string) => void;
-  onCancel: () => void;
-  onDelete?: () => void;
-  form?: Bookmark;
-}
+import { Bookmark, BookmarkType, BookmarkModalProps } from './types';
+import IconPicker from '../common/IconPicker';
 
 const BookmarkModal: React.FC<BookmarkModalProps> = ({
   visible,
