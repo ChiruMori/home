@@ -1,11 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FloatButton } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { useEditMode } from '@/components/common/ContextProvider';
+import ThemeModal from '../ThemeProvider/ThemeModal';
 
 const FloatBtn: React.FC = () => {
   const { editMode, setEditMode } = useEditMode();
+  const [open, setOpen] = useState(false);
+
+  const showModal = () => {
+    setOpen(true);
+  };
+
+  const handleCancel = () => {
+    setOpen(false);
+  };
 
   return (
     <>
@@ -17,12 +27,15 @@ const FloatBtn: React.FC = () => {
         badge={editMode ? { dot: true } : undefined}
       >
         <FloatButton
-          type={editMode ? 'primary' : 'default'}
           onClick={() => setEditMode(!editMode)}
           icon={<FontAwesomeIcon icon={['fas', 'edit']} bounce={editMode} />}
         />
-        <FloatButton icon={<FontAwesomeIcon icon={['fas', 'fill-drip']} />} />
+        <FloatButton
+          onClick={showModal}
+          icon={<FontAwesomeIcon icon={['fas', 'fill-drip']} />}
+        />
       </FloatButton.Group>
+      <ThemeModal open={open} onClose={handleCancel} />
     </>
   );
 };

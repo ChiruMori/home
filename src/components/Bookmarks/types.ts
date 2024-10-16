@@ -1,5 +1,3 @@
-import { IconName, IconPrefix } from '@fortawesome/fontawesome-svg-core';
-
 export enum BookmarkType {
   // 普通快捷方式
   URL = 'URL',
