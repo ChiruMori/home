@@ -64,8 +64,8 @@ const SearchTypeSelect: React.FC<{
   };
 
   return (
-    <Dropdown menu={menuProps}>
-      <Button type="link">
+    <Dropdown menu={menuProps} className="search-drop">
+      <Button>
         <Space>
           <FontAwesomeIcon icon={getSearchIcon(searchType)} />
           <FontAwesomeIcon icon={['fas', 'caret-down']} />
@@ -91,19 +91,15 @@ const SearchBarComponent: React.FC<{ type: SearchTypeEnum }> = ({ type }) => {
   }, [type]);
 
   return (
-    <Input.Search
-      className="search-bar"
-      size="large"
-      placeholder={getSearchName(searchType)}
-      addonBefore={
-        <SearchTypeSelect
-          searchType={searchType}
-          setSearchType={setSearchType}
-        />
-      } // 传递 searchType
-      allowClear
-      onSearch={(val) => onSearch(searchType, val)}
-    />
+    <Space.Compact block className="search-bar">
+      <SearchTypeSelect searchType={searchType} setSearchType={setSearchType} />
+      <Input.Search
+        size="large"
+        placeholder={getSearchName(searchType)}
+        allowClear
+        onSearch={(val) => onSearch(searchType, val)}
+      />
+    </Space.Compact>
   );
 };
 

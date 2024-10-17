@@ -7,6 +7,7 @@ import U from '@/helper/utils';
 import { useEditMode } from '@/components/common/ContextProvider';
 import { BookmarkType, BookmarksGroup, Bookmark } from './types';
 import BookmarkModal from './BookmarkModal';
+import { useTheme } from '@/components/ThemeProvider/ThemeContext';
 import './index.less';
 
 const initBookmarks = [
@@ -45,6 +46,7 @@ const BookmarksComponent: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentBookmark, setCurrentBookmark] = useState<Bookmark>();
   const [currentGroup, setCurrentGroup] = useState<string>('');
+  const { theme } = useTheme();
   const addBtnTitlePrefix = 'InnerAddTo:';
   // 上下文中的编辑模式
   const { editMode } = useEditMode();
@@ -279,7 +281,12 @@ const BookmarksComponent: React.FC = () => {
                 editable={
                   editMode
                     ? {
-                        icon: <FontAwesomeIcon icon={['fas', 'edit']} />,
+                        icon: (
+                          <FontAwesomeIcon
+                            icon={['fas', 'edit']}
+                            style={{ color: theme.primary }}
+                          />
+                        ),
                         tooltip: '点击编辑标题',
                         text: group.title,
                         enterIcon: <FontAwesomeIcon icon={['fas', 'check']} />,
@@ -302,6 +309,7 @@ const BookmarksComponent: React.FC = () => {
                       <FontAwesomeIcon
                         icon={['far', 'minus-square']}
                         className="group-minus-icon"
+                        style={{ color: theme.error }}
                       />
                     </button>
                   </Popconfirm>
@@ -366,6 +374,7 @@ const BookmarksComponent: React.FC = () => {
         <Card
           hidden={!editMode}
           className="bookmark-add-grp bookmark-card-add"
+          style={{ color: theme.primary }}
           hoverable={true}
           onDrop={(event) => onDropCard(event, generateGroupName(), 'add')}
           onDragOver={(event) => event.preventDefault()}

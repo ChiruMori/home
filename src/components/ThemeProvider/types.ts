@@ -4,12 +4,14 @@ export interface ThemeContextType {
 }
 
 export interface ThemeData {
-  bgColor: string;
-  primaryColor: string;
-
-  components: {
-    primaryColor: string;
-  };
+  bgBase: string;
+  textBase: string;
+  link: string;
+  error: string;
+  warning: string;
+  success: string;
+  primary: string;
+  info: string;
 
   algorithm: 'dark' | 'light';
 }

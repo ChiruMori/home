@@ -10,12 +10,15 @@ interface GradientColorDot {
 }
 
 interface ColorFormData {
-  bgColor: string;
-  primaryColor: string;
-  components: {
-    primaryColor: GradientColorDot[];
-  };
-  algorithm?: 'dark' | 'light';
+  bgBase: string;
+  textBase: string;
+  link: string;
+  error: string;
+  warning: string;
+  success: string;
+  info: string;
+  primary: GradientColorDot[];
+  algorithm: 'dark' | 'light';
 }
 
 const ThemeModal: React.FC<ThemeModalProps> = ({ open, onClose }) => {
@@ -28,7 +31,7 @@ const ThemeModal: React.FC<ThemeModalProps> = ({ open, onClose }) => {
     // linear-gradient(90deg, rgb(0, 0, 0), rgb(255, 255, 255))
     const colorStr = css
       .substring(0, css.length - 1)
-      .replace('linear-gradient(90deg, ', '');
+      .replace('linear-gradient(45deg, ', '');
     const colors = colorStr.split(',').map((c) => c.trim());
     return [
       {
@@ -44,22 +47,16 @@ const ThemeModal: React.FC<ThemeModalProps> = ({ open, onClose }) => {
 
   const themeToForm = (theme: ThemeData): ColorFormData => {
     return {
-      bgColor: theme.bgColor,
-      primaryColor: theme.primaryColor,
-      components: {
-        primaryColor: cssGridentToColor(theme.components.primaryColor),
-      },
+      ...theme,
+      primary: cssGridentToColor(theme.primary),
     };
   };
 
   const formToTheme = (form: ColorFormData): ThemeData => {
     return {
-      bgColor: form.bgColor,
-      primaryColor: form.primaryColor,
-      components: {
-        primaryColor: `linear-gradient(90deg, ${form.components.primaryColor[0].color}, ${form.components.primaryColor[1].color})`,
-      },
-      algorithm: form.algorithm || 'light',
+      ...form,
+      primary: `linear-gradient(90deg, ${form.primary[0].color}, ${form.primary[1].color})`,
+      algorithm: form.algorithm || 'dark',
     };
   };
 
@@ -90,24 +87,28 @@ const ThemeModal: React.FC<ThemeModalProps> = ({ open, onClose }) => {
         </Button>,
       ]}
     >
-      <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+      <Space
+        direction="vertical"
+        size="middle"
+        style={{ display: 'flex', padding: '12px 0px' }}
+      >
         <Space>
           <span>背景颜色：</span>
           <ColorPicker
             showText
-            value={colors.bgColor}
+            value={colors.bgBase}
             onChange={(color) => {
-              setColors({ ...colors, bgColor: color.toHexString() });
+              setColors({ ...colors, bgBase: color.toHexString() });
             }}
           />
         </Space>
         <Space>
-          <span>主题颜色：</span>
+          <span>文本颜色：</span>
           <ColorPicker
             showText
-            value={colors.primaryColor}
+            value={colors.textBase}
             onChange={(color) => {
-              setColors({ ...colors, primaryColor: color.toHexString() });
+              setColors({ ...colors, textBase: color.toHexString() });
             }}
           />
         </Space>
@@ -135,8 +136,14 @@ const ThemeModal: React.FC<ThemeModalProps> = ({ open, onClose }) => {
       <FloatButton.Group
         trigger="click"
         type="primary"
-        style={{ insetInlineEnd: 24 }}
-        placement="left"
+        style={{
+          insetInlineEnd: 24,
+          position: 'absolute',
+          bottom: 18,
+          left: 24,
+          right: 'unset',
+        }}
+        placement="right"
         icon={<FontAwesomeIcon icon={['fas', 'palette']} />}
       >
         <FloatButton

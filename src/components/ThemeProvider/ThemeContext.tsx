@@ -2,21 +2,26 @@ import React, { ReactNode, createContext, useContext, useState } from 'react';
 import { ThemeContextType, ThemeData } from './types';
 
 export const lightTheme: ThemeData = {
-  bgColor: '#ffffff',
-  primaryColor: '#1890ff',
-  components: {
-    // 蓝紫渐变色
-    primaryColor: 'linear-gradient(90deg, #1890ff, #7262fd)',
-  },
+  bgBase: '#ffffff',
+  textBase: '#000000',
+  link: '#1677ff',
+  error: '#ff4d4f',
+  warning: '#faad14',
+  success: '#52c41a',
+  info: '#1890ff',
+  primary: 'linear-gradient(45deg, #1890ff, #7265e6)',
   algorithm: 'light',
 };
 
 export const darkTheme: ThemeData = {
-  bgColor: '#001529',
-  primaryColor: '#1890ff',
-  components: {
-    primaryColor: 'linear-gradient(90deg, #1890ff, #7262fd)',
-  },
+  bgBase: '#000000',
+  textBase: '#ffffff',
+  link: '#1677ff',
+  error: '#ff4d4f',
+  warning: '#faad14',
+  success: '#52c41a',
+  info: '#1890ff',
+  primary: 'linear-gradient(45deg, #1890ff, #7265e6)',
   algorithm: 'dark',
 };
 
@@ -25,7 +30,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [theme, setTheme] = useState<ThemeData>(lightTheme);
+  const [theme, setTheme] = useState<ThemeData>(darkTheme);
   // TODO: 从 storage 中读取主题配置
 
   return (
