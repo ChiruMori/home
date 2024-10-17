@@ -9,7 +9,7 @@ export const lightTheme: ThemeData = {
   warning: '#faad14',
   success: '#52c41a',
   info: '#1890ff',
-  primary: 'linear-gradient(45deg, #1890ff, #7265e6)',
+  primary: '#1677ff',
   algorithm: 'light',
 };
 
@@ -21,7 +21,7 @@ export const darkTheme: ThemeData = {
   warning: '#faad14',
   success: '#52c41a',
   info: '#1890ff',
-  primary: 'linear-gradient(45deg, #1890ff, #7265e6)',
+  primary: '#1677ff',
   algorithm: 'dark',
 };
 

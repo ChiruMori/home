@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, FloatButton, ColorPicker, Space } from 'antd';
+import { Modal, Button, FloatButton, ColorPicker, Space, Radio } from 'antd';
 import { useTheme, lightTheme, darkTheme } from './ThemeContext';
-import { ThemeData, ThemeModalProps } from './types';
+import { ThemeModalProps } from './types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-interface GradientColorDot {
-  color: string;
-  percent: number;
-}
 
 interface ColorFormData {
   bgBase: string;
@@ -17,62 +12,28 @@ interface ColorFormData {
   warning: string;
   success: string;
   info: string;
-  primary: GradientColorDot[];
+  primary: string;
   algorithm: 'dark' | 'light';
 }
 
 const ThemeModal: React.FC<ThemeModalProps> = ({ open, onClose }) => {
   const { theme, setTheme } = useTheme();
 
-  const cssGridentToColor = (css: string): GradientColorDot[] => {
-    if (!css.startsWith('linear-gradient')) {
-      return [];
-    }
-    // linear-gradient(90deg, rgb(0, 0, 0), rgb(255, 255, 255))
-    const colorStr = css
-      .substring(0, css.length - 1)
-      .replace('linear-gradient(45deg, ', '');
-    const colors = colorStr.split(',').map((c) => c.trim());
-    return [
-      {
-        color: colors[0],
-        percent: 0,
-      },
-      {
-        color: colors[1],
-        percent: 100,
-      },
-    ];
-  };
-
-  const themeToForm = (theme: ThemeData): ColorFormData => {
-    return {
-      ...theme,
-      primary: cssGridentToColor(theme.primary),
-    };
-  };
-
-  const formToTheme = (form: ColorFormData): ThemeData => {
-    return {
-      ...form,
-      primary: `linear-gradient(90deg, ${form.primary[0].color}, ${form.primary[1].color})`,
-      algorithm: form.algorithm || 'dark',
-    };
-  };
-
   // 使用状态对象管理颜色
-  const [colors, setColors] = useState<ColorFormData>(themeToForm(theme));
+  const [colors, setColors] = useState<ColorFormData>(theme);
 
   // 当 modal 打开时，初始化颜色值
   useEffect(() => {
     if (open) {
-      setColors(themeToForm(theme));
+      setColors(theme);
     }
   }, [open, theme]);
 
   const handleSave = function () {
-    const themeForUpdate = formToTheme(colors);
-    setTheme(themeForUpdate);
+    setTheme({
+      ...colors,
+      algorithm: colors.algorithm || 'dark',
+    });
     onClose();
   };
 
@@ -93,7 +54,7 @@ const ThemeModal: React.FC<ThemeModalProps> = ({ open, onClose }) => {
         style={{ display: 'flex', padding: '12px 0px' }}
       >
         <Space>
-          <span>背景颜色：</span>
+          <span>主背景色：</span>
           <ColorPicker
             showText
             value={colors.bgBase}
@@ -103,7 +64,7 @@ const ThemeModal: React.FC<ThemeModalProps> = ({ open, onClose }) => {
           />
         </Space>
         <Space>
-          <span>文本颜色：</span>
+          <span>主文本色：</span>
           <ColorPicker
             showText
             value={colors.textBase}
@@ -113,23 +74,80 @@ const ThemeModal: React.FC<ThemeModalProps> = ({ open, onClose }) => {
           />
         </Space>
         <Space>
-          <span>组件主题颜色：</span>
+          <span>成功颜色：</span>
           <ColorPicker
-            mode="gradient"
             showText
-            value={colors.components.primaryColor}
+            value={colors.success}
+            onChange={(color) => {
+              setColors({ ...colors, success: color.toHexString() });
+            }}
+          />
+        </Space>
+        <Space>
+          <span>错误颜色：</span>
+          <ColorPicker
+            showText
+            value={colors.error}
+            onChange={(color) => {
+              setColors({ ...colors, error: color.toHexString() });
+            }}
+          />
+        </Space>
+        <Space>
+          <span>警告颜色：</span>
+          <ColorPicker
+            showText
+            value={colors.warning}
+            onChange={(color) => {
+              setColors({ ...colors, warning: color.toHexString() });
+            }}
+          />
+        </Space>
+        <Space>
+          <span>信息颜色：</span>
+          <ColorPicker
+            showText
+            value={colors.info}
+            onChange={(color) => {
+              setColors({ ...colors, info: color.toHexString() });
+            }}
+          />
+        </Space>
+        <Space>
+          <span>链接颜色：</span>
+          <ColorPicker
+            showText
+            value={colors.link}
+            onChange={(color) => {
+              setColors({ ...colors, link: color.toHexString() });
+            }}
+          />
+        </Space>
+        <Space>
+          <span>组件颜色：</span>
+          <ColorPicker
+            showText
+            value={colors.primary}
             onChange={(color) => {
               setColors({
                 ...colors,
-                components: {
-                  primaryColor: color.getColors().map((c) => ({
-                    color: c.color.toHexString(),
-                    percent: c.percent,
-                  })),
-                },
+                primary: color.toHexString(),
               });
             }}
           />
+        </Space>
+        <Space>
+          <span>主题类型：</span>
+          <Radio.Group
+            buttonStyle="solid"
+            value={colors.algorithm}
+            onChange={(e) => {
+              setColors({ ...colors, algorithm: e.target.value });
+            }}
+          >
+            <Radio.Button value="dark">深色</Radio.Button>
+            <Radio.Button value="light">浅色</Radio.Button>
+          </Radio.Group>
         </Space>
       </Space>
       {/* 预设快捷选项 */}
@@ -147,11 +165,11 @@ const ThemeModal: React.FC<ThemeModalProps> = ({ open, onClose }) => {
         icon={<FontAwesomeIcon icon={['fas', 'palette']} />}
       >
         <FloatButton
-          onClick={() => setColors(themeToForm(lightTheme))}
+          onClick={() => setColors(lightTheme)}
           icon={<FontAwesomeIcon icon={['fas', 'sun']} />}
         />
         <FloatButton
-          onClick={() => setColors(themeToForm(darkTheme))}
+          onClick={() => setColors(darkTheme)}
           icon={<FontAwesomeIcon icon={['fas', 'moon']} />}
         />
       </FloatButton.Group>

@@ -54,7 +54,9 @@ const BookmarksComponent: React.FC = () => {
   useEffect(() => {
     const fetchBookmarks = async () => {
       storage.getAsync('bookmarks').then((data) => {
-        data && setBookmarkGroups(data as BookmarksGroup[]);
+        if (data) {
+          setBookmarkGroups(data as BookmarksGroup[]);
+        }
       });
     };
     fetchBookmarks();
@@ -103,7 +105,7 @@ const BookmarksComponent: React.FC = () => {
       return;
     }
     const fromIndex = fromBookmarks.findIndex((bm) => bm.title === fromTitle);
-    let toIndex = targetBookmarks.findIndex((bm) => bm.title === toTitle);
+    const toIndex = targetBookmarks.findIndex((bm) => bm.title === toTitle);
     const toInsert = fromBookmarks[fromIndex];
     fromBookmarks.splice(fromIndex, 1);
     if (toIndex === -1 && toTitle.startsWith(addBtnTitlePrefix)) {
@@ -130,7 +132,7 @@ const BookmarksComponent: React.FC = () => {
 
   // 表单
   const handleOk = (values: Bookmark, initTitle?: string) => {
-    if (!editMode) {
+    if (!editMode || !values.title) {
       return;
     }
     const bookmarksTmp = bookmarkGroups.slice();
@@ -324,6 +326,13 @@ const BookmarksComponent: React.FC = () => {
                     <List.Item className="bookmark-item">
                       <Card
                         className={`bookmark-card bookmark-card-${bm.type.toLowerCase()}`}
+                        style={
+                          bm.type === BookmarkType.ADD
+                            ? {
+                                color: theme.primary,
+                              }
+                            : {}
+                        }
                         hoverable={true}
                         draggable={editMode && bm.type !== BookmarkType.ADD}
                         onDrop={(event) =>

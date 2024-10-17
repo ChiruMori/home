@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   ConfigProvider,
   ThemeConfig,
   theme,
   Layout,
-  Menu,
   Typography,
   Space,
 } from 'antd';
@@ -24,7 +23,6 @@ import { ThemeData } from './components/ThemeProvider/types';
 
 const Main: React.FC = () => {
   const { theme: themeConfig } = useTheme();
-  const [collapsed, setCollapsed] = useState(false);
 
   const convertTheme = (themeConfig: ThemeData): ThemeConfig => {
     const themeToUse =
@@ -33,17 +31,15 @@ const Main: React.FC = () => {
         : theme.defaultAlgorithm;
     return {
       token: {
-        // 主题色（文字）
-        // colorPrimary: themeConfig.primaryColor,
-        // // 背景色
-        // colorWhite: themeConfig.bgColor,
+        colorBgBase: themeConfig.bgBase,
+        colorTextBase: themeConfig.textBase,
+        colorLink: themeConfig.link,
+        colorError: themeConfig.error,
+        colorWarning: themeConfig.warning,
+        colorSuccess: themeConfig.success,
+        colorInfo: themeConfig.info,
+        colorPrimary: themeConfig.primary,
       },
-      // components: {
-      //   Button: {
-      //     // 主题色（按钮）
-      //     colorPrimary: themeConfig.components.primaryColor,
-      //   },
-      // },
       algorithm: themeToUse,
     };
   };
@@ -73,7 +69,7 @@ const Main: React.FC = () => {
           <Footer style={{ textAlign: 'center' }}>
             <Space>
               <Typography.Text type="secondary">
-                Copyright ©{new Date().getFullYear()}
+                Copyright ©{new Date().getFullYear()} Mori
               </Typography.Text>
               <Typography.Link
                 type="secondary"
