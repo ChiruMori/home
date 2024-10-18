@@ -84,7 +84,6 @@ const SearchBarComponent: React.FC<{ type: SearchTypeEnum }> = ({ type }) => {
   useEffect(() => {
     storage.get(searchEngineKey, (searchTypeFromLocal) => {
       if (searchTypeFromLocal) {
-        console.log('read local searchType:', searchTypeFromLocal);
         setSearchType(searchTypeFromLocal as SearchTypeEnum);
       }
     });

@@ -6,6 +6,7 @@ import {
   Layout,
   Typography,
   Space,
+  App,
 } from 'antd';
 import { Content, Footer, Header } from 'antd/es/layout/layout';
 
@@ -47,46 +48,46 @@ const Main: React.FC = () => {
   return (
     <ConfigProvider theme={convertTheme(themeConfig)}>
       <EditModeProvider>
-        <Layout
-          style={{
-            height: '100vh',
-            overflow: 'hidden',
-          }}
-        >
-          {/* 顶部导航栏*/}
-          <Header></Header>
-          <Content style={{ padding: '12px' }}>
-            {/* 侧边栏 */}
-            <aside className="main-sidebar"></aside>
-            {/* 搜索栏 */}
-            <SearchBarComponent type={SearchTypeEnum.GOOGLE} />
-            {/* 书签区域 */}
-            <BookmarksComponent />
-            {/* 浮动按钮 */}
-            <FloatBtn />
-          </Content>
-          {/* 底部版权声明 */}
-          <Footer style={{ textAlign: 'center' }}>
-            <Space>
-              <Typography.Text type="secondary">
-                Copyright ©{new Date().getFullYear()} Mori
-              </Typography.Text>
-              <Typography.Link
-                type="secondary"
-                href="http://beian.miit.gov.cn/"
-                target="_blank"
-              >
-                辽ICP备17003106号-3
-              </Typography.Link>
-            </Space>
-          </Footer>
-        </Layout>
+        <App notification={{ placement: 'topRight' }}>
+          <Layout
+            style={{
+              height: '100vh',
+              overflow: 'hidden',
+            }}
+          >
+            {/* 顶部导航栏*/}
+            <Header></Header>
+            <Content style={{ padding: '12px' }}>
+              {/* 搜索栏 */}
+              <SearchBarComponent type={SearchTypeEnum.GOOGLE} />
+              {/* 书签区域 */}
+              <BookmarksComponent />
+              {/* 浮动按钮 */}
+              <FloatBtn />
+            </Content>
+            {/* 底部版权声明 */}
+            <Footer style={{ textAlign: 'center' }}>
+              <Space>
+                <Typography.Text type="secondary">
+                  Copyright ©{new Date().getFullYear()} Mori
+                </Typography.Text>
+                <Typography.Link
+                  type="secondary"
+                  href="http://beian.miit.gov.cn/"
+                  target="_blank"
+                >
+                  辽ICP备17003106号-3
+                </Typography.Link>
+              </Space>
+            </Footer>
+          </Layout>
+        </App>
       </EditModeProvider>
     </ConfigProvider>
   );
 };
 
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
   return (
     <ThemeProvider>
       <Main />
@@ -94,4 +95,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+export default AppContent;

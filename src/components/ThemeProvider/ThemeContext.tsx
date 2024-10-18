@@ -1,5 +1,12 @@
-import React, { ReactNode, createContext, useContext, useState } from 'react';
+import React, {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { ThemeContextType, ThemeData } from './types';
+import storage from '@/helper/localHolder';
 
 export const lightTheme: ThemeData = {
   bgBase: '#ffffff',
@@ -31,7 +38,16 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [theme, setTheme] = useState<ThemeData>(darkTheme);
-  // TODO: 从 storage 中读取主题配置
+
+  useEffect(() => {
+    async function getTheme() {
+      const storagedTheme = (await storage.getAsync('theme')) as ThemeData;
+      if (storagedTheme) {
+        setTheme(storagedTheme);
+      }
+    }
+    getTheme();
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme }}>

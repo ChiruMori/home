@@ -3,6 +3,7 @@ import { Modal, Button, FloatButton, ColorPicker, Space, Radio } from 'antd';
 import { useTheme, lightTheme, darkTheme } from './ThemeContext';
 import { ThemeModalProps } from './types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import storage from '@/helper/localHolder';
 
 interface ColorFormData {
   bgBase: string;
@@ -30,10 +31,12 @@ const ThemeModal: React.FC<ThemeModalProps> = ({ open, onClose }) => {
   }, [open, theme]);
 
   const handleSave = function () {
-    setTheme({
+    const themeToSave = {
       ...colors,
       algorithm: colors.algorithm || 'dark',
-    });
+    };
+    setTheme(themeToSave);
+    storage.setAsync('theme', themeToSave);
     onClose();
   };
 

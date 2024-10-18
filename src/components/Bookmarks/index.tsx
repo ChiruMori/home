@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Card, List, Popconfirm, Typography, notification } from 'antd';
+import { Card, List, Popconfirm, Typography, App } from 'antd';
 
 import storage from '@/helper/localHolder';
 import U from '@/helper/utils';
@@ -50,6 +50,8 @@ const BookmarksComponent: React.FC = () => {
   const addBtnTitlePrefix = 'InnerAddTo:';
   // 上下文中的编辑模式
   const { editMode } = useEditMode();
+  // 具有上下文的 notificaiton
+  const { notification } = App.useApp();
   // 从本地存储中读取书签数据
   useEffect(() => {
     const fetchBookmarks = async () => {
