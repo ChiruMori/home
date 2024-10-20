@@ -1,5 +1,6 @@
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
 
 export default {
   output: {
@@ -14,7 +15,8 @@ export default {
     }),
   ],
   optimization: {
-    minimizer: [new CssMinimizerPlugin()],
+    minimize: true,
+    minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
   },
   mode: 'production',
 };

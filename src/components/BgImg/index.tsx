@@ -18,7 +18,12 @@ const BgImgCarousel: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-img">
+    <div
+      className="bg-img"
+      style={{
+        background: theme.bgBase,
+      }}
+    >
       <Carousel
         autoplay
         autoplaySpeed={10000}
