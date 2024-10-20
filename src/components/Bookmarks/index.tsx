@@ -332,8 +332,11 @@ const BookmarksComponent: React.FC = () => {
                           bm.type === BookmarkType.ADD
                             ? {
                                 color: theme.primary,
+                                backgroundColor: theme.bgBase + 'AA',
                               }
-                            : {}
+                            : {
+                                backgroundColor: theme.bgBase + 'AA',
+                              }
                         }
                         hoverable={true}
                         draggable={editMode && bm.type !== BookmarkType.ADD}
@@ -385,7 +388,7 @@ const BookmarksComponent: React.FC = () => {
         <Card
           hidden={!editMode}
           className="bookmark-add-grp bookmark-card-add"
-          style={{ color: theme.primary }}
+          style={{ color: theme.primary, backgroundColor: theme.bgBase + 'AA' }}
           hoverable={true}
           onDrop={(event) => onDropCard(event, generateGroupName(), 'add')}
           onDragOver={(event) => event.preventDefault()}

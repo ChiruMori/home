@@ -10,6 +10,7 @@ import {
   getSearchUrl,
   SearchTypeEnum,
 } from './types';
+import { useTheme } from '../ThemeProvider/ThemeContext';
 
 const searchEngineKey = 'searchType';
 
@@ -17,6 +18,7 @@ const SearchTypeSelect: React.FC<{
   searchType: SearchTypeEnum;
   setSearchType: (type: SearchTypeEnum) => void;
 }> = ({ searchType, setSearchType }) => {
+  const { theme } = useTheme();
   // 选择搜索引擎类型
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     const newSearchType = e.key as SearchTypeEnum;
@@ -65,7 +67,11 @@ const SearchTypeSelect: React.FC<{
 
   return (
     <Dropdown menu={menuProps} className="search-drop">
-      <Button>
+      <Button
+        style={{
+          backgroundColor: theme.bgBase + 'AA',
+        }}
+      >
         <Space>
           <FontAwesomeIcon icon={getSearchIcon(searchType)} />
           <FontAwesomeIcon icon={['fas', 'caret-down']} />
@@ -88,6 +94,7 @@ const SearchBarComponent: React.FC<{ type: SearchTypeEnum }> = ({ type }) => {
       }
     });
   }, [type]);
+  const { theme } = useTheme();
 
   return (
     <Space.Compact block className="search-bar">
@@ -97,7 +104,15 @@ const SearchBarComponent: React.FC<{ type: SearchTypeEnum }> = ({ type }) => {
         placeholder={getSearchName(searchType)}
         allowClear
         onSearch={(val) => onSearch(searchType, val)}
+        className="search-input"
       />
+      <style>
+        {`
+          .search-input span, .search-input button {
+            background-color: ${theme.bgBase + 'AA'};
+          }
+        `}
+      </style>
     </Space.Compact>
   );
 };

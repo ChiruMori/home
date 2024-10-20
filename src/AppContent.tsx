@@ -7,6 +7,8 @@ import {
   Typography,
   Space,
   App,
+  Menu,
+  Avatar,
 } from 'antd';
 import { Content, Footer, Header } from 'antd/es/layout/layout';
 
@@ -16,14 +18,18 @@ import SearchBarComponent from './components/SearchBar';
 import BookmarksComponent from './components/Bookmarks';
 import { EditModeProvider } from './components/common/ContextProvider';
 import FloatBtn from './components/FloatBtn';
+import BgImg from './components/BgImg';
+import BgImgDrawer from './components/BgImg/BgImgDrawer';
 import {
   ThemeProvider,
   useTheme,
 } from './components/ThemeProvider/ThemeContext';
 import { ThemeData } from './components/ThemeProvider/types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Main: React.FC = () => {
   const { theme: themeConfig } = useTheme();
+  const [drawerOpen, setDrawerOpen] = React.useState(false);
 
   const convertTheme = (themeConfig: ThemeData): ThemeConfig => {
     const themeToUse =
@@ -49,15 +55,52 @@ const Main: React.FC = () => {
     <ConfigProvider theme={convertTheme(themeConfig)}>
       <EditModeProvider>
         <App notification={{ placement: 'topRight' }}>
+          <BgImg />
+          <BgImgDrawer visible={drawerOpen} setVisible={setDrawerOpen} />
           <Layout
             style={{
               height: '100vh',
               overflow: 'hidden',
+              backgroundColor: 'transparent',
             }}
           >
             {/* 顶部导航栏*/}
-            <Header></Header>
-            <Content style={{ padding: '12px' }}>
+            <Header
+              style={{
+                backgroundColor: themeConfig.bgBase + 'AA',
+                padding: 0,
+                display: 'flex',
+              }}
+            >
+              <Avatar
+                size="large"
+                src="./favicon.ico"
+                style={{
+                  backgroundColor: themeConfig.bgBase + 'AA',
+                  margin: '12px',
+                  cursor: 'pointer',
+                }}
+                onClick={() => window.open('https://mori.plus')}
+              />
+              <Menu
+                style={{
+                  backgroundColor: 'transparent',
+                  borderBottom: '2px solid ' + themeConfig.primary,
+                }}
+                theme={themeConfig.algorithm}
+                mode="horizontal"
+                selectedKeys={[]}
+                items={[
+                  {
+                    key: 'bgImg',
+                    label: '背景',
+                    onClick: () => setDrawerOpen(true),
+                    icon: <FontAwesomeIcon icon={['fas', 'image']} />,
+                  },
+                ]}
+              />
+            </Header>
+            <Content style={{ padding: '48px' }}>
               {/* 搜索栏 */}
               <SearchBarComponent type={SearchTypeEnum.GOOGLE} />
               {/* 书签区域 */}
@@ -66,7 +109,12 @@ const Main: React.FC = () => {
               <FloatBtn />
             </Content>
             {/* 底部版权声明 */}
-            <Footer style={{ textAlign: 'center' }}>
+            <Footer
+              style={{
+                textAlign: 'center',
+                backgroundColor: themeConfig.bgBase + 'AA',
+              }}
+            >
               <Space>
                 <Typography.Text type="secondary">
                   Copyright ©{new Date().getFullYear()} Mori

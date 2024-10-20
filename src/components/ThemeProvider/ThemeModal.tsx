@@ -60,6 +60,7 @@ const ThemeModal: React.FC<ThemeModalProps> = ({ open, onClose }) => {
           <span>主背景色：</span>
           <ColorPicker
             showText
+            disabledAlpha
             value={colors.bgBase}
             onChange={(color) => {
               setColors({ ...colors, bgBase: color.toHexString() });
@@ -70,9 +71,25 @@ const ThemeModal: React.FC<ThemeModalProps> = ({ open, onClose }) => {
           <span>主文本色：</span>
           <ColorPicker
             showText
+            disabledAlpha
             value={colors.textBase}
             onChange={(color) => {
               setColors({ ...colors, textBase: color.toHexString() });
+            }}
+          />
+        </Space>
+
+        <Space>
+          <span>组件颜色：</span>
+          <ColorPicker
+            showText
+            disabledAlpha
+            value={colors.primary}
+            onChange={(color) => {
+              setColors({
+                ...colors,
+                primary: color.toHexString(),
+              });
             }}
           />
         </Space>
@@ -80,6 +97,7 @@ const ThemeModal: React.FC<ThemeModalProps> = ({ open, onClose }) => {
           <span>成功颜色：</span>
           <ColorPicker
             showText
+            disabledAlpha
             value={colors.success}
             onChange={(color) => {
               setColors({ ...colors, success: color.toHexString() });
@@ -90,6 +108,7 @@ const ThemeModal: React.FC<ThemeModalProps> = ({ open, onClose }) => {
           <span>错误颜色：</span>
           <ColorPicker
             showText
+            disabledAlpha
             value={colors.error}
             onChange={(color) => {
               setColors({ ...colors, error: color.toHexString() });
@@ -100,6 +119,7 @@ const ThemeModal: React.FC<ThemeModalProps> = ({ open, onClose }) => {
           <span>警告颜色：</span>
           <ColorPicker
             showText
+            disabledAlpha
             value={colors.warning}
             onChange={(color) => {
               setColors({ ...colors, warning: color.toHexString() });
@@ -110,6 +130,7 @@ const ThemeModal: React.FC<ThemeModalProps> = ({ open, onClose }) => {
           <span>信息颜色：</span>
           <ColorPicker
             showText
+            disabledAlpha
             value={colors.info}
             onChange={(color) => {
               setColors({ ...colors, info: color.toHexString() });
@@ -120,22 +141,10 @@ const ThemeModal: React.FC<ThemeModalProps> = ({ open, onClose }) => {
           <span>链接颜色：</span>
           <ColorPicker
             showText
+            disabledAlpha
             value={colors.link}
             onChange={(color) => {
               setColors({ ...colors, link: color.toHexString() });
-            }}
-          />
-        </Space>
-        <Space>
-          <span>组件颜色：</span>
-          <ColorPicker
-            showText
-            value={colors.primary}
-            onChange={(color) => {
-              setColors({
-                ...colors,
-                primary: color.toHexString(),
-              });
             }}
           />
         </Space>

@@ -26,6 +26,7 @@ export default {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/index.html',
+      favicon: './favicon.ico',
     }),
     // 清理上次打包的文件
     new CleanWebpackPlugin({
