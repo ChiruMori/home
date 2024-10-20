@@ -28,9 +28,11 @@ const exportAll = () =>
         if (err) {
           reject(err);
         } else {
-          // 编码
-          const dataString = btoa(JSON.stringify(data));
-          resolve(dataString);
+          // 处理特殊字符并编码
+          const dataJson = JSON.stringify(data);
+          const dataString = encodeURIComponent(dataJson);
+          const base64Data = btoa(dataString);
+          resolve(base64Data);
         }
       },
     );
@@ -38,7 +40,7 @@ const exportAll = () =>
 
 const importAll = (dataString: string) => {
   // 解码
-  const data = JSON.parse(atob(dataString));
+  const data = JSON.parse(decodeURIComponent(atob(dataString)));
   // 导入
   const importPromise = Object.entries(data).map(([key, value]) =>
     localforage.setItem(key, value),
