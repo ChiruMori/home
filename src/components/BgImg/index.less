@@ -1,31 +1,17 @@
 .bg-img {
-  height: 0;
-
-  .bg-img__overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-  }
+  position: relative;
+  top: -100vh;
+  z-index: -1;
 
   // 图片垂直水平居中，不拉伸、不留白
   .bg-img__img {
-    height: 100%;
-    width: 100%;
-    overflow: hidden;
-    position: absolute;
+    width: 100vw;
+    height: 100vh;
 
-    .ant-image {
-      width: 100%;
-      height: 100%;
-    }
     img {
+      width: 100vw;
+      height: 100vh;
       object-fit: cover;
-      width: 100%;
-      height: 100%;
-      position: absolute;
     }
   }
 }

@@ -54,8 +54,14 @@ const Main: React.FC = () => {
   return (
     <ConfigProvider theme={convertTheme(themeConfig)}>
       <EditModeProvider>
-        <App notification={{ placement: 'topRight' }}>
-          <BgImg />
+        <App
+          notification={{ placement: 'topRight' }}
+          style={{
+            overflow: 'hidden',
+            width: '100vw',
+            height: '100vh',
+          }}
+        >
           <BgImgDrawer visible={drawerOpen} setVisible={setDrawerOpen} />
           <Layout
             style={{
@@ -129,6 +135,7 @@ const Main: React.FC = () => {
               </Space>
             </Footer>
           </Layout>
+          <BgImg />
         </App>
       </EditModeProvider>
     </ConfigProvider>
