@@ -106,7 +106,14 @@ const Main: React.FC = () => {
                 ]}
               />
             </Header>
-            <Content style={{ padding: '48px' }}>
+            <Content
+              style={{
+                padding: '48px',
+                overflowY: 'scroll',
+                // 隐藏滚动条
+                scrollbarWidth: 'none',
+              }}
+            >
               {/* 搜索栏 */}
               <SearchBarComponent type={SearchTypeEnum.GOOGLE} />
               {/* 书签区域 */}
